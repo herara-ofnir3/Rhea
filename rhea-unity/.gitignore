@@ -89,4 +89,4 @@ crashlytics-build.properties
 .utmp
 
 # NuGetForUnity
-#/[Aa]ssets/Packages/
+/[Aa]ssets/Packages/
