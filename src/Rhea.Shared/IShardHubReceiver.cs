@@ -1,6 +1,6 @@
 namespace Rhea.Shared
 {
-	public interface IDimensionHubReceiver
+	public interface IShardHubReceiver
 	{
 		void OnJoined();
 

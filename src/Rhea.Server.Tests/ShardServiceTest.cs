@@ -6,33 +6,33 @@ using Xunit;
 
 namespace Rhea.Server.Tests;
 
-public class DimensionServiceTests
+public class ShardServiceTest
 {
-    static readonly Guid AlphaId = new Guid("1DEB75D0-F03E-4EB6-B431-BD523434DFFC");
+    static readonly Guid AlphaId = new("1DEB75D0-F03E-4EB6-B431-BD523434DFFC");
 
     [Fact]
     public async Task Asign_WhenAlphaAlreadyExists_ShouldNotCallCreateAndRun()
     {
 		// arrange
 		var mockGroupProvider = new Mock<IMulticastGroupProvider>();
-		var mockGroup = new Mock<IMulticastSyncGroup<string, IDimensionHubReceiver>>();
+		var mockGroup = new Mock<IMulticastSyncGroup<string, IShardHubReceiver>>();
 		var existingId = Guid.NewGuid(); // 検証用のため AlphaId 以外の ID を使用します
-		var existingContext = new DimensionContext(existingId, mockGroup.Object);
-        var mockRepo = new Mock<IContextRepository<DimensionContext>>();
+		var existingContext = new ShardContext(existingId, mockGroup.Object);
+        var mockRepo = new Mock<IContextRepository<ShardContext>>();
 		mockRepo
 			.Setup(m => m.TryGet(AlphaId, out existingContext))
 			.Returns(true)
 			.Verifiable();
 		
-        var logger = NullLogger<DimensionService>.Instance;
-        var service = new DimensionService(mockRepo.Object, mockGroupProvider.Object, logger);
+        var logger = NullLogger<ShardService>.Instance;
+        var service = new ShardService(mockRepo.Object, mockGroupProvider.Object, logger);
 
         // act
         var result = await service.Asign();
 
         // assert: TryGet が呼ばれ、CreateAndRun は呼ばれない
 		mockRepo.Verify();
-		mockRepo.Verify(m => m.CreateAndRun(It.IsAny<Func<DimensionContext>>()), Times.Never);
+		mockRepo.Verify(m => m.CreateAndRun(It.IsAny<Func<ShardContext>>()), Times.Never);
 		Assert.Equal(existingId, result);
 	}
 
@@ -41,25 +41,25 @@ public class DimensionServiceTests
 	{
 		// arrange
 		var mockGroupProvider = new Mock<IMulticastGroupProvider>();
-		var mockGroup = new Mock<IMulticastSyncGroup<string, IDimensionHubReceiver>>();
+		var mockGroup = new Mock<IMulticastSyncGroup<string, IShardHubReceiver>>();
 		mockGroupProvider
-			.Setup(m => m.GetOrAddSynchronousGroup<string, IDimensionHubReceiver>($"Dimension/{AlphaId}"))
+			.Setup(m => m.GetOrAddSynchronousGroup<string, IShardHubReceiver>($"Shard/{AlphaId}"))
 			.Returns(mockGroup.Object)
 			.Verifiable();
-		var creatingContext = new DimensionContext(AlphaId, mockGroup.Object);
-		DimensionContext? existingContext = null;
-		var mockRepo = new Mock<IContextRepository<DimensionContext>>();
+		var creatingContext = new ShardContext(AlphaId, mockGroup.Object);
+		ShardContext? existingContext = null;
+		var mockRepo = new Mock<IContextRepository<ShardContext>>();
 		mockRepo
 			.Setup(m => m.TryGet(AlphaId, out existingContext))
 			.Returns(false)
 			.Verifiable();
 		mockRepo
-			.Setup(m => m.CreateAndRun(It.IsAny<Func<DimensionContext>>()))
+			.Setup(m => m.CreateAndRun(It.IsAny<Func<ShardContext>>()))
 			.Returns(creatingContext)
-			.Callback((Func<DimensionContext> create) => create());
+			.Callback((Func<ShardContext> create) => create());
 
-		var logger = NullLogger<DimensionService>.Instance;
-		var service = new DimensionService(mockRepo.Object, mockGroupProvider.Object, logger);
+		var logger = NullLogger<ShardService>.Instance;
+		var service = new ShardService(mockRepo.Object, mockGroupProvider.Object, logger);
 
 		// act
 		var result = await service.Asign();

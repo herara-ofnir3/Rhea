@@ -5,11 +5,11 @@ using Rhea.Shared;
 
 namespace Rhea.Server;
 
-public class DimensionService(
-	IContextRepository<DimensionContext> contextRepository,
+public class ShardService(
+	IContextRepository<ShardContext> contextRepository,
 	IMulticastGroupProvider groupProvider,
-	ILogger<DimensionService> logger
-	) : ServiceBase<IDimensionService>, IDimensionService
+	ILogger<ShardService> logger
+	) : ServiceBase<IShardService>, IShardService
 {
 	static readonly Guid alphaId = new("1DEB75D0-F03E-4EB6-B431-BD523434DFFC");
 
@@ -17,16 +17,16 @@ public class DimensionService(
 	{
 		if (contextRepository.TryGet(alphaId, out var alpha))
 		{
-			logger.LogInformation("Aplha dimension already exists");
+			logger.LogInformation("Aplha shard already exists");
 			return UnaryResult.FromResult(alpha.Id);
 		}
 
 		alpha = contextRepository.CreateAndRun(() =>
 		{
-			var group = groupProvider.GetOrAddSynchronousGroup<string, IDimensionHubReceiver>($"Dimension/{alphaId}");
-			return new DimensionContext(alphaId, group);
+			var group = groupProvider.GetOrAddSynchronousGroup<string, IShardHubReceiver>($"Shard/{alphaId}");
+			return new ShardContext(alphaId, group);
 		});
-		logger.LogInformation("Aplha dimension started");
+		logger.LogInformation("Aplha shard started");
 		return UnaryResult.FromResult(alpha.Id);
 	}
 }

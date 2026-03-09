@@ -3,16 +3,16 @@ using Rhea.Shared;
 
 namespace Rhea.Server;
 
-public sealed class DimensionContext(
+public sealed class ShardContext(
 	Guid id,
-	IMulticastSyncGroup<string, IDimensionHubReceiver> group
+	IMulticastSyncGroup<string, IShardHubReceiver> group
 	) : IContext, IDisposable
 {
 	public Guid Id { get; } = id;
 
 	public bool IsCompleted { get; private set; }
 
-	public IMulticastSyncGroup<string, IDimensionHubReceiver> Group { get; } = group;
+	public IMulticastSyncGroup<string, IShardHubReceiver> Group { get; } = group;
 
 	public void Dispose()
 	{

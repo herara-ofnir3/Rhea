@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Rhea.Shared
 {
 	[MessagePackObject]
-	public class PlayerInDimension
+	public class PlayerInShard
 	{
 		[Key(0)]
 		public Player Player { get; set; } = new Player();

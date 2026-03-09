@@ -4,7 +4,7 @@ using System;
 namespace Rhea.Shared
 {
 	[MessagePackObject]
-	public class Dimension
+	public class Shard
 	{
 		[Key(0)]
 		public Guid Id { get; set; }

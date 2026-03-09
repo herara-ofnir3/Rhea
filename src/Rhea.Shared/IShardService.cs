@@ -3,7 +3,7 @@ using System;
 
 namespace Rhea.Shared
 {
-	public interface IDimensionService : IService<IDimensionService>
+	public interface IShardService : IService<IShardService>
 	{
 		UnaryResult<Guid> Asign();
 	}
