@@ -1,4 +1,4 @@
-using Rhea.Server.Services;
+using Rhea.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 

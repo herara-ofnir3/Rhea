@@ -19,12 +19,6 @@ public sealed class ContextRepositoryTest
         var longRunningContext = new MockContext { Id = longRunningContextId };
         CancellationToken? longRunningContextCancelToken = null;
 
-        var factory = new Mock<IContextFactory<MockContext>>();
-        factory
-            .SetupSequence(m => m.Create())
-            .Returns(context1)
-            .Returns(longRunningContext);
-
         var runner = new Mock<IContextRunner<MockContext>>();
         runner
             .Setup(m => m.RunAsync(context1, It.IsAny<CancellationToken>()))
@@ -38,12 +32,12 @@ public sealed class ContextRepositoryTest
 				Assert.Fail("Task not canceled");
             });
 
-        var repository = new ContextRepository<MockContext>(factory.Object, runner.Object);
+        var repository = new ContextRepository<MockContext>(runner.Object);
 
-        var created1 = repository.CreateAndRun();
+        var created1 = repository.CreateAndRun(() => context1);
         Assert.Equal(contextId1, created1.Id);
 
-        var everRunningContextCreated = repository.CreateAndRun();
+        var everRunningContextCreated = repository.CreateAndRun(() => longRunningContext);
         Assert.Equal(longRunningContextId, longRunningContext.Id);
 
         Assert.True(repository.TryGet(contextId1, out var got1));
@@ -73,18 +67,13 @@ public sealed class ContextRepositoryTest
         var contextId1 = Guid.NewGuid();
         var context1 = new DisposableContext { Id = contextId1 };
 
-        var factory = new Mock<IContextFactory<DisposableContext>>();
-        factory
-            .Setup(m => m.Create())
-            .Returns(context1);
-
         var runner = new Mock<IContextRunner<DisposableContext>>();
         runner
             .Setup(m => m.RunAsync(context1, It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
-        var repository = new ContextRepository<DisposableContext>(factory.Object, runner.Object);
+        var repository = new ContextRepository<DisposableContext>(runner.Object);
 
-        var created1 = repository.CreateAndRun();
+        var created1 = repository.CreateAndRun(() => context1);
         Assert.Equal(contextId1, created1.Id);
 
         Assert.True(repository.TryGet(contextId1, out var got1));
@@ -105,24 +94,19 @@ public sealed class ContextRepositoryTest
         var contextId1 = Guid.NewGuid();
         var context1 = new DisposableContext { Id = contextId1 };
 
-        var factory = new Mock<IContextFactory<DisposableContext>>();
-        factory
-            .Setup(m => m.Create())
-            .Returns(context1);
-
         var runner = new Mock<IContextRunner<DisposableContext>>();
         runner
             .Setup(m => m.RunAsync(context1, It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        var repository = new ContextRepository<DisposableContext>(factory.Object, runner.Object);
+        var repository = new ContextRepository<DisposableContext>(runner.Object);
 
         // コンテキストが 0件 の場合、必ず失敗します
         Assert.Throws<InvalidOperationException>(() => repository.Remove(Guid.NewGuid()));
         Assert.Throws<InvalidOperationException>(() => repository.Remove(contextId1));
 
         // コンテキストが 1件 の場合、存在しないIDは失敗します
-        repository.CreateAndRun();
+        repository.CreateAndRun(() => context1);
         Assert.Throws<InvalidOperationException>(() => repository.Remove(Guid.NewGuid()));
 
         // 存在するIDは成功します
