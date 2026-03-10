@@ -1,5 +1,6 @@
 using Cysharp.Runtime.Multicast;
 using Rhea.Shared;
+using System.Collections.Concurrent;
 
 namespace Rhea.Server;
 
@@ -13,6 +14,20 @@ public sealed class ShardContext(
 	public bool IsCompleted { get; private set; }
 
 	public IMulticastSyncGroup<string, IShardHubReceiver> Group { get; } = group;
+
+	public ConcurrentQueue<ICommand<ShardContext>> CommandQueue { get; } = new();
+
+	public ShardState State { get; } = new();
+
+	public void Complete()
+	{
+		if (IsCompleted)
+		{
+			return;
+		}
+
+		IsCompleted = true;
+	}
 
 	public void Dispose()
 	{

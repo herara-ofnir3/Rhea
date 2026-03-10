@@ -1,9 +1,11 @@
+using System;
+
 namespace Rhea.Shared
 {
 	public interface IShardHubReceiver
 	{
-		void OnJoined();
+		void OnJoined(PlayerInShard playerInShard);
 
-		void OnLeft();
+		void OnLeft(Guid playerId);
 	}
 }
