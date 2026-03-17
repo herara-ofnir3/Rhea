@@ -1,13 +1,18 @@
 using MagicOnion;
 using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Rhea.Shared
 {
 	public interface IShardHub : IStreamingHub<IShardHub, IShardHubReceiver>
 	{
-		ValueTask Join(Guid shardId, Player player);
+		ValueTask JoinAsync(Guid shardId, Player player);
 
-		ValueTask Leave();
+		ValueTask LeaveAsync();
+
+		ValueTask MoveAsync(Vector2 position, Vector2 direction);
+
+		ValueTask<PlayerInShard[]> GetPlayers();
 	}
 }

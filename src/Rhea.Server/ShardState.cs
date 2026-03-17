@@ -21,7 +21,7 @@ public class ShardState
 			PlayerId = playerInShard.Player.Id,
 			PlayerName = playerInShard.Player.Name,
 			Position = playerInShard.Position,
-			Rotation = playerInShard.Rotation,
+			Direction = playerInShard.Direction,
 		};
 		players.Add(playerInShard.Player.Id, playerState);
 		return playerState;
@@ -37,7 +37,7 @@ public class ShardState
 		players.Remove(playerId);
 	}
 
-	public void MovePlayer(Guid playerId, Vector2 position, Quaternion rotation)
+	public void MovePlayer(Guid playerId, Vector2 position, Vector2 direction)
 	{
 		if (!players.ContainsKey(playerId))
 		{
@@ -45,6 +45,6 @@ public class ShardState
 		}
 		var player = players[playerId];
 		player.Position = position;
-		player.Rotation = rotation;
+		player.Direction = direction;
 	}
 }

@@ -20,18 +20,18 @@ public sealed class ShardStateTest
 		{
 			Player = player,
 			Position = new Vector2(1, 2),
-			Rotation = new Quaternion(1, 2, 3, 4)
+			Direction = new Vector2(3, 4)
 		};
 		var actual = shardState.JoinPlayer(playerInShard);
 		Assert.Equal("TestPlayer", actual.PlayerName);
 		Assert.Equal(new Vector2(1, 2), actual.Position);
-		AssertQuaternionEqual(new Quaternion(1, 2, 3, 4), actual.Rotation);
+		Assert.Equal(new Vector2(3, 4), actual.Direction);
 
 		Assert.True(shardState.Players.ContainsKey(playerId));
 		var playerState = shardState.Players[playerId];
 		Assert.Equal("TestPlayer", playerState.PlayerName);
 		Assert.Equal(new Vector2(1, 2), playerState.Position);
-		AssertQuaternionEqual(new Quaternion(1, 2, 3, 4), playerState.Rotation);
+		Assert.Equal(new Vector2(3, 4), playerState.Direction);
 
 		shardState.LeavePlayer(playerId);
 		Assert.False(shardState.Players.ContainsKey(playerId));
@@ -50,7 +50,7 @@ public sealed class ShardStateTest
 				Name = "TestPlayer",
 			},
 			Position = Vector2.zero,
-			Rotation = Quaternion.identity
+			Direction = Vector2.up,
 		};
 		shardState.JoinPlayer(playerInShard);
 		Assert.Throws<InvalidOperationException>(() => shardState.JoinPlayer(playerInShard));
@@ -77,15 +77,15 @@ public sealed class ShardStateTest
 				Name = "TestPlayer",
 			},
 			Position = Vector2.zero,
-			Rotation = Quaternion.identity
+			Direction = Vector2.up,
 		};
 		shardState.JoinPlayer(playerInShard);
 		var newPosition = new Vector2(3, 4);
-		var newRotation = new Quaternion(5, 6, 7, 8);
-		shardState.MovePlayer(playerId, newPosition, newRotation);
+		var newDirection = new Vector2(5, 6);
+		shardState.MovePlayer(playerId, newPosition, newDirection);
 		var playerState = shardState.Players[playerId];
 		Assert.Equal(newPosition, playerState.Position);
-		AssertQuaternionEqual(newRotation, playerState.Rotation);
+		Assert.Equal(newDirection, playerState.Direction);
 	}
 
 	[Fact]
@@ -94,15 +94,15 @@ public sealed class ShardStateTest
 		var shardState = new ShardState();
 		var playerId = Guid.NewGuid();
 		var newPosition = new Vector2(3, 4);
-		var newRotation = new Quaternion(5, 6, 7, 8);
+		var newRotation = new Vector2(5, 6);
 		Assert.Throws<InvalidOperationException>(() => shardState.MovePlayer(playerId, newPosition, newRotation));
 	}
 
-	static void AssertQuaternionEqual(Quaternion expected, Quaternion actual)
-	{
-		Assert.Equal(expected.x, actual.x);
-		Assert.Equal(expected.y, actual.y);
-		Assert.Equal(expected.z, actual.z);
-		Assert.Equal(expected.w, actual.w);
-	}
+	//static void AssertQuaternionEqual(Quaternion expected, Quaternion actual)
+	//{
+	//	Assert.Equal(expected.x, actual.x);
+	//	Assert.Equal(expected.y, actual.y);
+	//	Assert.Equal(expected.z, actual.z);
+	//	Assert.Equal(expected.w, actual.w);
+	//}
 }

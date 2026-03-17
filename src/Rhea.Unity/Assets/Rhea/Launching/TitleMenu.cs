@@ -1,4 +1,4 @@
-namespace Rhea.Launching
+namespace Rhea.Unity.Launching
 {
 	public enum TitleMenu
 	{

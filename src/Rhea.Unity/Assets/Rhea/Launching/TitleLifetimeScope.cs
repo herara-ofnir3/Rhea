@@ -1,7 +1,7 @@
 using VContainer;
 using VContainer.Unity;
 
-namespace Rhea.Launching
+namespace Rhea.Unity.Launching
 {
 	public class TitleLifetimeScope : LifetimeScope
 	{

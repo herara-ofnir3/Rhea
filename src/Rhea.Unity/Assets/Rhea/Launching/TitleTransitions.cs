@@ -1,15 +1,18 @@
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityScreenNavigator.Runtime.Core.Page;
 
-namespace Rhea.Launching
+namespace Rhea.Unity.Launching
 {
 	public interface ITitleTransitions
 	{
-		UniTask<ISplashPageView> StartedAsync(CancellationToken cancellationToken = default);
+		UniTask<ISplashPageView> LaunchedAsync(CancellationToken cancellationToken = default);
 
 		UniTask<IMenuPageView> SplashFinishedAsync(CancellationToken cancellationToken = default);
+
+		UniTask StartedAsync(CancellationToken cancellationToken = default);
 	}
 
 	public class TitleTransitions : MonoBehaviour, ITitleTransitions
@@ -17,7 +20,7 @@ namespace Rhea.Launching
 		[SerializeField]
 		PageContainer pageContainer;
 
-		public async UniTask<ISplashPageView> StartedAsync(CancellationToken cancellationToken = default)
+		public async UniTask<ISplashPageView> LaunchedAsync(CancellationToken cancellationToken = default)
 		{
 			var pushed = await pageContainer.PushAsync<SplashPageView>(
 				"Assets/Rhea/Launching/SplashPage.prefab",
@@ -35,6 +38,11 @@ namespace Rhea.Launching
 				cancellation: cancellationToken
 				);
 			return pushed.Page;
+		}
+
+		public async UniTask StartedAsync(CancellationToken cancellationToken = default)
+		{
+			await SceneManager.LoadSceneAsync("Assets/Rhea/MainScene.unity");
 		}
 	}
 }

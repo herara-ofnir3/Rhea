@@ -10,5 +10,5 @@ public class PlayerInShardState
 
 	public Vector2 Position { get; set; }
 
-	public Quaternion Rotation { get; set; }
+	public Vector2 Direction { get; set; }
 }

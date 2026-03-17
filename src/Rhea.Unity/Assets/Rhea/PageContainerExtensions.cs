@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityScreenNavigator.Runtime.Core.Page;
 
-namespace Rhea
+namespace Rhea.Unity
 {
 	public static class PageContainerExtensions
 	{

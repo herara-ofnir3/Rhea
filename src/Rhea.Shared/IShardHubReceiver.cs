@@ -7,5 +7,7 @@ namespace Rhea.Shared
 		void OnJoined(PlayerInShard playerInShard);
 
 		void OnLeft(Guid playerId);
+
+		void OnMoved(PlayerInShard playerInShard);
 	}
 }

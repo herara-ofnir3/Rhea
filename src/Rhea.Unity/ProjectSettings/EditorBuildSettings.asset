@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Rhea/Launching/TitleScene.unity
+    guid: b6d5d505d0dd19142a6674cf16140f68
+  - enabled: 1
+    path: Assets/Rhea/MainScene.unity
+    guid: 0d95e569ec736e64686686c465a65a3c
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:

@@ -1,12 +1,10 @@
 using Cysharp.Threading.Tasks;
-using R3;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityScreenNavigator.Runtime.Core.Page;
 
-namespace Rhea.Launching
+namespace Rhea.Unity.Launching
 {
 	public interface IMenuPageView
 	{

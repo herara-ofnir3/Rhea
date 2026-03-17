@@ -3,7 +3,7 @@ using System.Threading;
 using UnityEngine.InputSystem;
 using UnityScreenNavigator.Runtime.Core.Page;
 
-namespace Rhea.Launching
+namespace Rhea.Unity.Launching
 {
 	public interface ISplashPageView
 	{

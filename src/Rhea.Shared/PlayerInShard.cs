@@ -13,6 +13,6 @@ namespace Rhea.Shared
 		public Vector2 Position { get; set; } = Vector2.zero;
 
 		[Key(2)]
-		public Quaternion Rotation { get; set; } = Quaternion.identity;
+		public Vector2 Direction { get; set; } = Vector2.down;
 	}
 }

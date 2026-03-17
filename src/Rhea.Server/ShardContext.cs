@@ -19,6 +19,23 @@ public sealed class ShardContext(
 
 	public ShardState State { get; } = new();
 
+	//public void Away(Player player)
+	//{
+	//	if (IsCompleted)
+	//	{
+	//		return;
+	//	}
+
+	//	if (!State.Players.ContainsKey(player.Id))
+	//	{
+	//		return;
+	//	}
+
+	//	State.LeavePlayer(player.Id);
+	//	Group.All.OnLeft(player.Id);
+	//	Group.Remove($"Player/{player.Id}");
+	//}
+
 	public void Complete()
 	{
 		if (IsCompleted)

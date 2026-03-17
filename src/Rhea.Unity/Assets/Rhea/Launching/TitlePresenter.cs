@@ -4,7 +4,7 @@ using System.Threading;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace Rhea.Launching
+namespace Rhea.Unity.Launching
 {
 	public class TitlePresenter : IAsyncStartable
 	{
@@ -18,7 +18,7 @@ namespace Rhea.Launching
 		public async UniTask StartAsync(CancellationToken cancellation = default)
 		{
 			DebugLog($"[{nameof(TitlePresenter)}] Started");
-			var splashPageView = await titleTransitions.StartedAsync(cancellation);
+			var splashPageView = await titleTransitions.LaunchedAsync(cancellation);
 			await splashPageView.WaitFinishedAsync(cancellation);
 			var menuPageView = await titleTransitions.SplashFinishedAsync(cancellation);
 
@@ -31,7 +31,8 @@ namespace Rhea.Launching
 					switch (selected)
 					{
 						case TitleMenu.Start:
-							break;
+							await titleTransitions.StartedAsync(cancellation);
+							return;
 						case TitleMenu.Settings:
 							break;
 						case TitleMenu.Quit:
