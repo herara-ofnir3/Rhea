@@ -1,0 +1,24 @@
+{
+    "name": "Rhea.Unity",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:2359c074672083046b6ff6b309700f8e",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:77221876cc6b8244180b96e320b1bcd4",
+        "GUID:17fa6b4c9ba5e5c4abb91891ef3b32ad",
+        "GUID:350d0af80fb7b7947a59de66ab477547",
+        "GUID:c3bc0afe4a069b54aa23296f3c18a871",
+        "GUID:034c977408447714e91237bd5f97c1ff"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
